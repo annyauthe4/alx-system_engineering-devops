@@ -1,1 +1,1 @@
-Clone and configure my shell basics repo
+Shell basics including navigation
