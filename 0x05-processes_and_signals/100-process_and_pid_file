@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# Creates file /var/run/myscript.pid containing its PID.
+# Displays message indefinitely.
+# Displays a message when receiving SIGTERM
+# Displays a message when receiving SIGINIT
+# Deletes file and terminates if SIGQUIT or SIGTERM
+
+ echo "$$" > /var/run/myscript.pid
+
+terminate() {
+	rm -f /var/run/myscript.pid
+	exit
+}
+trap 'echo "Y U no love me?!"' SIGINT
+trap 'echo "I hate the kill command" && terminate' SIGTERM
+trap 'terminate' SIGQUIT
+
+while true
+do
+  echo "To infinity and beyond"
+  sleep 2
+done
