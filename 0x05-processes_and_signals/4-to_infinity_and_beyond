@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# loops sentence till infinity
+# Adds sleep 2 in between each loop.
+
+while true
+do
+  echo "To infinity and beyond"
+  sleep 2
+done
