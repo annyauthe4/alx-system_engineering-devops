@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# This script configures an Ubuntu server
+
+# Backup the original /etc/hosts file
+sudo cp /etc/hosts /etc/hosts.bak
+
+# Add or modify the entries for localhost and facebook.com
+echo "Configuring /etc/hosts file..."
+
+# Use sed to ensure localhost is set to 127.0.0.2
+sudo sed -i '/localhost/d' /etc/hosts
+echo "127.0.0.2   localhost" | sudo tee -a /etc/hosts > /dev/null
+
+# Add entry for facebook.com resolving to 8.8.8.8
+sudo sed -i '/facebook.com/d' /etc/hosts
+echo "8.8.8.8     facebook.com" | sudo tee -a /etc/hosts > /dev/null
+
+echo "Configuration complete. Current /etc/hosts:"
+cat /etc/hosts
