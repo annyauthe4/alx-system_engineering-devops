@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+#  This Script displays listen ports
+
+# Check if the script is run with superuser privileges
+if [[ $EUID -ne 0 ]]; then
+    echo "Please run this script as root or with sudo."
+    exit 1
+fi
+
+# Display active listening ports with program names and PIDs
+echo "Active Internet connections (only servers)"
+netstat -tunlp | grep LISTEN
+
+echo ""
+echo "Active UNIX domain sockets (only servers)"
+netstat -xl | grep LISTEN
