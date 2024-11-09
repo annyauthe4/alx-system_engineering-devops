@@ -5,7 +5,6 @@
 sudo cp /etc/hosts /etc/hosts.bak
 
 # Clear the file
-echo "Configuring /etc/hosts file..."
 sudo truncate -s 0 /etc/hosts
 
 # Add the required entries
@@ -14,6 +13,3 @@ sudo tee /etc/hosts > /dev/null <<EOL
 127.0.0.2   localhost
 8.8.8.8     facebook.com
 EOL
-
-echo "Configuration complete. Current /etc/hosts:"
-cat /etc/hosts
