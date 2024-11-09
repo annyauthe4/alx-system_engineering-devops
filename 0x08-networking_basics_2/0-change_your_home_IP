@@ -4,16 +4,16 @@
 # Backup the original /etc/hosts file
 sudo cp /etc/hosts /etc/hosts.bak
 
-# Add or modify the entries for localhost and facebook.com
+# Clear the file
 echo "Configuring /etc/hosts file..."
+sudo truncate -s 0 /etc/hosts
 
-# Use sed to ensure localhost is set to 127.0.0.2
-sudo sed -i '/localhost/d' /etc/hosts
-echo "127.0.0.2   localhost" | sudo tee -a /etc/hosts > /dev/null
-
-# Add entry for facebook.com resolving to 8.8.8.8
-sudo sed -i '/facebook.com/d' /etc/hosts
-echo "8.8.8.8     facebook.com" | sudo tee -a /etc/hosts > /dev/null
+# Add the required entries
+sudo tee /etc/hosts > /dev/null <<EOL
+127.0.0.1   localhost
+127.0.0.2   localhost
+8.8.8.8     facebook.com
+EOL
 
 echo "Configuration complete. Current /etc/hosts:"
 cat /etc/hosts
