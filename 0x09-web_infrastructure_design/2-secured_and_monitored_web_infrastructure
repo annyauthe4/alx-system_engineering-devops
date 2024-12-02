@@ -1,0 +1,64 @@
+https://i.imgur.com/yc00tny.png
+
+
+Components and Roles
+1. Additional Elements
+Firewalls (3 Total):
+
+	Why Added: Firewalls control and restrict access to each part of the infrastructure, reducing the risk of unauthorized access and attacks.
+	Placement:
+	Firewall 1: Between the internet and the load balancer to block malicious requests.
+	Firewall 2: Between the load balancer and the web/application servers to allow only traffic from trusted sources.
+	Firewall 3: Between the application servers and the database to ensure only application servers can query the database.
+	SSL Certificate:
+
+	Why Added: To serve www.foobar.com over HTTPS, encrypting all data exchanged between users and the server.
+	Role:
+	Prevents data interception and ensures privacy.
+	Increases user trust by showing a secure connection.
+	Monitoring Clients (3 Total):
+
+		Why Added: To track server performance, uptime, and error rates, providing insights for proactive maintenance.
+		Placement:
+		Installed on the load balancer, web/application servers, and database.
+		Security Enhancements
+		Firewalls
+		Role: Act as gatekeepers to the network, filtering incoming and outgoing traffic based on defined security rules.
+		Benefits:
+		Block unauthorized traffic.
+		Protect against DDoS attacks and brute force attempts.
+		HTTPS
+		Role: Encrypts data exchanged between users and the website.
+		Benefits:
+		Prevents man-in-the-middle (MITM) attacks.
+		Ensures user credentials, payment details, and sensitive data remain confidential.
+		Monitoring
+		Purpose
+		Detect server failures, performance bottlenecks, and security breaches.
+		Provide metrics such as request-per-second (QPS), CPU usage, memory usage, and database query times.
+		How Monitoring Tools Collect Data
+		Monitoring Clients:
+		Installed on each component (e.g., load balancer, application servers, database).
+		Send metrics (logs, errors, and performance data) to a centralized service like Sumo Logic, Datadog, or Prometheus.
+		Monitoring Web Server QPS
+		Steps:
+		Install a monitoring agent on the web server.
+		Configure the agent to track incoming HTTP requests using Nginx logs.
+		Send the data to the centralized monitoring tool.
+		Use dashboards or alerts to visualize QPS and set thresholds for alerts.
+		Issues with This Infrastructure
+		Terminating SSL at the Load Balancer Level:
+
+		Explanation: SSL termination decrypts traffic at the load balancer, forwarding unencrypted data to web/application servers.
+		Problem: Data remains vulnerable during transmission between the load balancer and servers.
+		Solution: Use end-to-end encryption by re-encrypting traffic between the load balancer and servers.
+		One MySQL Server for Writes:
+
+		Explanation: All write operations rely on the Primary database.
+		Problem: A failure of the Primary leads to write unavailability.
+		Solution: Implement automatic failover or multi-primary setups to ensure continuous write availability.
+		All Servers Having the Same Components:
+
+		Explanation: Combining database, application server, and web server on the same machine creates resource contention.
+		Problem: A high database load can slow down the web server, causing cascading failures.
+		Solution: Use dedicated servers for each role (web, application, and database) for better resource isolation.
