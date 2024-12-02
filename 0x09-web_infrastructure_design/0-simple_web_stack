@@ -1,0 +1,53 @@
+https://i.imgur.com/h6uWvmN.png
+
+**Infrastructure Design**
+	Scenario: A User Accessing the Website
+	A user opens their browser and types www.foobar.com or clicks a link pointing to it.
+	The browser sends a DNS query to resolve www.foobar.com to its corresponding IP address, 8.8.8.8.
+	The browser establishes a connection to the server at 8.8.8.8 and sends an HTTP/HTTPS request.
+
+	The server:
+
+		Nginx (web server) receives the request and forwards it to the application server.
+		Application Server processes the request using the codebase and retrieves data from the database.
+
+		MySQL (database) provides the necessary data (e.g., user information or property listings).
+		The response is sent back to the user's browser to render the website
+
+** Key Components**
+1. Server
+What It Is: A physical or virtual machine that provides computing resources (CPU, memory, storage) to run the web application.
+Role: Hosts all components (web server, application server, database, and codebase) required for the website to function.
+
+2. Domain Name
+Role: A human-readable address (e.g., foobar.com) that maps to the server's IP address.
+www Record: A CNAME (Canonical Name) or an A record in the DNS configuration that resolves www.foobar.com to the IP address 8.8.8.8.
+
+3. Web Server (Nginx)
+	Role: Acts as the front-end server.
+	Handles incoming HTTP/HTTPS requests from the user's browser.
+	Serves static files (HTML, CSS, JS, images).
+	Forwards dynamic requests to the application server.
+	4. Application Server
+	Role: Runs the codebase (business logic) for the website.
+	Handles dynamic content, such as user logins, property searches, or booking processes.
+	Interacts with the database to retrieve or store data.
+	5. Database (MySQL)
+	Role: Stores all the data used by the application.
+	Example: User information, property listings, bookings, and reviews.
+	Provides structured queries (SQL) to retrieve or update data.
+	6. Communication with the User
+	The server communicates with the user's computer via the HTTP/HTTPS protocols over the internet.
+	HTTPS ensures encrypted and secure communication.
+	Issues with the Infrastructure
+	Single Point of Failure (SPOF):
+
+		If the server crashes or fails, the entire website becomes unavailable.
+		All components (web server, application server, database) depend on the same physical machine.
+		Downtime During Maintenance:
+
+		Updates to the codebase or database maintenance require restarting the server or individual components, leading to temporary unavailability.
+		Lack of Scalability:
+
+		The single server cannot handle high traffic. Increased load leads to performance degradation.
+		Scaling requires moving to a multi-server architecture with load balancing.
