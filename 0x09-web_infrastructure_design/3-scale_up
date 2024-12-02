@@ -1,0 +1,32 @@
+https://imgur.com/a/4A0ebkN
+
+1. Load Balancer Cluster
+Configuration: Active-Passive setup ensures no SPOF at the load balancing layer.
+SSL Termination: Encrypted traffic terminates at the load balancer but is re-encrypted for end-to-end security.
+Algorithm: Round Robin distributes traffic evenly across servers.
+
+2. Firewalls
+Firewall 1: Filters incoming traffic to the load balancer from the internet.
+Firewall 2: Restricts communication between the load balancer and the web server.
+Firewall 3: Protects the application server by allowing only traffic from the web server.
+Firewall 4: Secures the database by permitting access only from the application server.
+
+3. Web Server (Nginx with SSL)
+	Role: Handles static content and passes dynamic requests to the application server.
+	SSL: Ensures HTTPS for encrypted communication between users and the web server.
+
+4. Application Server
+Role: Processes dynamic requests and interacts with the database to fetch or store data.
+
+5. Database Cluster
+Primary Node: Handles write operations and syncs data to the Replica.
+Replica Node: Processes read-only queries, reducing load on the Primary.
+
+
+6. Monitoring Clients
+Tools: Sumo Logic, Datadog, or Prometheus collect performance metrics and logs.
+Coverage: Installed on every server and the load balancer.
+Tracked Metrics:
+HTTP requests per second (QPS).
+Server uptime and response times.
+Database query latency and replication status.
