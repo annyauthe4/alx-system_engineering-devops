@@ -1,0 +1,57 @@
+https://i.imgur.com/h6uWvmN.png
+
+**Three-Server Web Infrastructure Design**
+Scenario: A User Accessing the Website
+A user types www.foobar.com in their browser or clicks a link to the site.
+The DNS resolves www.foobar.com to the IP address of the load balancer.
+The user's request is directed to the Load Balancer (HAProxy), which distributes traffic to one of the two web/application servers.
+The selected server processes the request:
+The Nginx Web Server handles the request and forwards it to the Application Server.
+The Application Server executes the business logic using the codebase and queries the Primary Database (MySQL) for data.
+If the database receives a write operation (e.g., new user registration), it is sent to the Primary database and replicated to the Replica database.
+The processed response is sent back to the user via the load balancer.
+
+Infrastructure Components
+**1. Additional Elements and Their Roles**
+Load Balancer (HAProxy):
+
+	Why Added: Distributes incoming traffic across multiple servers to prevent overloading a single server and increase reliability.
+	Configuration:
+	Round Robin Algorithm: Distributes traffic evenly among servers.
+	Example: If there are two servers, requests alternate between Server 1 and Server 2.
+	Active-Active Setup: All servers are actively handling traffic simultaneously.
+	Active-Passive Alternative: One server handles traffic while the other stays idle, only taking over during failures.
+	Active-Active improves resource utilization but requires better monitoring to avoid conflicts.
+	Second Server (Web/Application Server):
+
+		Why Added: Provides redundancy and increases capacity to handle more users. If one server fails, the load balancer redirects traffic to the other server.
+		Primary-Replica Database Cluster:
+
+		Why Added: Ensures data redundancy and improves read performance.
+		How It Works:
+		The Primary (Master) node handles all write operations (e.g., new bookings).
+		The Replica (Slave) node synchronizes data from the Primary and serves read-only queries, reducing load on the Primary.
+		2. Communication Flow
+		User's browser communicates with the Load Balancer using HTTP/HTTPS.
+		The Load Balancer forwards requests to the Web/Application Servers.
+		The application queries the database and sends responses back to the user.
+		Issues With This Infrastructure
+		Single Point of Failure (SPOF):
+
+			Load Balancer: If the load balancer fails, the entire infrastructure becomes inaccessible. Solution: Add a secondary load balancer with failover.
+			Primary Database: If the Primary fails, writes cannot be performed. Solution: Enable automatic failover to promote a Replica as the new Primary.
+			Security Issues:
+
+			No Firewall: External threats can directly reach the servers.
+			No HTTPS: User data is sent in plain text, making it vulnerable to interception. Solution: Use SSL/TLS certificates.
+			No Monitoring:
+
+			No system to monitor server health, performance, or database replication status.
+			Solution: Integrate tools like Prometheus, Grafana, or AWS CloudWatch.
+			Comparison: Primary vs. Replica Nodes
+			Primary Node:
+			Handles all write operations and synchronizes changes to the Replica(s).
+			Is the single source of truth for all updates.
+			Replica Node:
+			Handles read operations to reduce load on the Primary.
+			Maintains a real-time copy of the Primary but does not accept writes.
