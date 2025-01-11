@@ -1,0 +1,8 @@
+# SSH client configuration using the private key ~/.ssh/school
+# to connect to the server
+
+Host 52781-web-01
+    HostName 54.224.50.164
+    User ubuntu
+    IdentifyFile ~/.ssh/school
+    PasswordAuthentication no
