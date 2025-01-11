@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Connect to a remote server using ssh single-character flag
+# and a private rsa key with ubuntu user
+
+ssh -i ~/.ssh/school ubuntu@54.224.50.164
