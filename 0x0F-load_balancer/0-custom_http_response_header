@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+# Double the number of web server and configure Nginx so that its
+# HTTP response contains a custom header on web-01 and web-02 servers
+
+# Update package list and install Nginx
+sudo apt update
+sudo apt install -y nginx
+
+# Create or modify Nginx site configuration
+NGINX_CONF="/etc/nginx/sites-available/default"
+
+# Add custom header to Nginx config
+if [ -f "$NGINX_CONF" ]; then
+    if ! grep -q "add_header X-Served-By \$hostname;" "$NGINX_CONF"; then
+        sudo sed -i '/location \/ {/a \\tadd_header X-Served-By \$hostname;' "$NGINX_CONF"
+    fi
+else
+    echo "Nginx config file not found"
+    exit 1;
+fi
+
+# Test Nginx configuration and reload service
+sudo nginx -t
+if [ $? -eq 0 ]; then
+    sudo systemctl reload nginx
+else
+    echo "Nginx config failed"
+    exit 1
+fi
+
+echo "X-Served-By: $hostname"
