@@ -2,18 +2,13 @@
 # Install nginx on web-01 server and follow certain requirements
 
 # Update package list and install nginx
-apt-get update
-apt-get install -y nginx
+sudo apt update
+sudo apt install nginx -y
 
+# Ensure firewall does not restrict
+sudo ufw allow 'Nginx HTTP'
 # Create a simple "Hello World!" content
-echo "Hello World!" | sudo tee /var/www/html/index.html
-
-# Ensure Nginx is listening on port 80
-sed -i 's/listen 80 default_server;/listen 80;/g' /etc/nginx/sites-available/default
-sed -i 's/listen \[::\]:80 default_server;/listen \[::\]:80;/g' /etc/nginx/sites-available/default
+echo "Hello World!" > /var/www/html/index.html
 
 # Restart Nginx using the service instead of systemctl
 service nginx restart
-
-# Exit the script
-exit 0
