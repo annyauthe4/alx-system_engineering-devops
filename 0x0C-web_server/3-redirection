@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# Redirect an Nginx to another server
+
+# Update package
+sudo apt update
+
+# Install Nginx if not installed
+sudo apt install nginx -y
+
+# Backup default config and write new config
+sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bak
+
+# Modify the default configuration
+sudo sed -i '/^\s*server {/a \
+    \    location /redirect_me { \
+    \        return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4; \
+    \    }' /etc/nginx/sites-available/default
+# Restart Nginx to apply the changes
+sudo systemctl restart nginx
