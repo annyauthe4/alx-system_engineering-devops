@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# Include page not found - error_404 configuration
+
+# Update package
+sudo apt update
+
+# Install Nginx if not available
+sudo apt install nginx -y
+
+# Start nginx
+sudo service nginx start
+
+# Allow Nginx on firewall
+sudo ufw allow 'Nginx HTTP'
+
+# Backup default configuration
+sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bak
+
+# Write page content
+echo "Ceci n'est pas une page" >> /var/www/html/error_404.html
+sudo sed -i '25i\	error_page 404 /error_404.html;' /etc/nginx/sites-available/default
+
+# Restart nginx
+sudo service nginx restart
