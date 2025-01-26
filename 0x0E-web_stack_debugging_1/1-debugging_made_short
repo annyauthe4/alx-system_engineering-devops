@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Configure Nginx to ensure service init say nginx is not running
+sudo sed -i 's/8080/80/g' /etc/nginx/sites-enabled/default
+sudo service nginx start
+sudo rm /run/nginx.pid
