@@ -14,15 +14,12 @@ if [ -f "$NGINX_CONF" ]; then
     if ! grep -q "add_header X-Served-By \$hostname;" "$NGINX_CONF"; then
         sudo sed -i '/location \/ {/a \\tadd_header X-Served-By \$hostname;' "$NGINX_CONF"
     fi
-else
-    echo "Nginx config file not found"
-    exit 1;
 fi
 
 # Test Nginx configuration and reload service
 sudo nginx -t
 if [ $? -eq 0 ]; then
-    sudo systemctl reload nginx
+    sudo service nginx reload
 else
     echo "Nginx config failed"
     exit 1
