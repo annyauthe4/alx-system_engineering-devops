@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+# Run process as Nginx user and ensure its listening on port 8080
+
+# Exit on error
+set -e
+
+# Ensure the nginx user exists
+if ! id -u nginx; then
+    echo "Creating nginx user..."
+    useradd -r -s /sbin/nologin nginx
+fi
+
+# Modify the nginx configuration to run as nginx user
+echo "Configuring Nginx to run as nginx user..."
+sed -i 's/^user .*/user nginx;/' /etc/nginx/nginx.conf
+
+# Update the default site config to listen on port 8080
+echo "Update Nginx to listen on port 8080..."
+sed -i 's/listen 80;/listen 8080;/' /etc/nginx/sites-available/default
+sed -i 's/listen \[::\]:80;/listen \[::\]:8080;/' /etc/nginx/sites-available/default
+
+# Ensure proper permission
+echo "Setting correct permissions..."
+chown -R nginx:nginx /var/www/html
+chown -R nginx:nginx /var/log/nginx
+chown -R nginx:nginx /var/lib/nginx
+
+# Allow port 8080 through the firewall
+echo "Allowing port 8080 in firewall..."
+ufw allow 8080/tcp || echo "UFW not available, skipping..."
+
+# Restart Nginx to apply changes
+echo "Restarting Nginx..."
+systemctl restart nginx
+
+# Verify Nginx is running as nginx user
+echo "Verifying Nginx process..."
+ps aux | grep '[n]ginx'
+
+# Check if Nginx is listening on port 8080
+echo "Checking if Nginx is listening on port 8080..."
+ss -tulnp | grep 8080 || echo "Nginx not listening on port 8080"
+
+echo "Nginx successfully configured"
