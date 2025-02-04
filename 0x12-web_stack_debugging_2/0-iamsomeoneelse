@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# Accepts 1 arg and run whoami under user passed arg
+
+# Check if exactly one arg is passed
+if [ "$#" -ne 1 ]; then
+    exit 1
+fi
+
+# Save the arg in a variable
+USER="$1"
+
+# Run as a privileged user
+sudo -u "$USER" whoami
