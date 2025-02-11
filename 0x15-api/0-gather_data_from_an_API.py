@@ -32,7 +32,7 @@ def get_employee_todo_progress(employee_id):
     # Print todo format
     print(f"Employee {employee_name} is done with tasks({done}/{all_tasks})")
     for task in completed_tasks:
-        print(f"\t {task['title']}")
+        print("\t {}".format(task.get("title")))
 
 
 if __name__ == "__main__":
