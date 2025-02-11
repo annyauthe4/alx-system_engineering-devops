@@ -4,13 +4,13 @@ Export Employee todo record in JSON format.
 """
 
 
+import json
 import requests
 import sys
-import json
 
 
 def export_in_json(employee_id):
-    """Export employee tasks in CSV format."""
+    """Export employee tasks in JSON format."""
     REST_API = "https://jsonplaceholder.typicode.com"
 
     # Fetch user data
