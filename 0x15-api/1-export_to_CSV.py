@@ -4,9 +4,9 @@ Export Employee todo record in CSV format.
 """
 
 
+import csv
 import requests
 import sys
-import csv
 
 
 def export_in_csv(employee_id):
