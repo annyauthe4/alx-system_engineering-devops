@@ -34,7 +34,7 @@ def recurse(subreddit, hot_list=[], after=None):
     headers = {"User-Agent": "custom-script:v1.0 ( by/u/Otherwise-Fondant360)"}
 
     # Define parameters for pagination
-    params = {"limit": 100} # Fetch up to 100 posts per request
+    params = {"limit": 100}  # Fetch up to 100 posts per request
     if after:
         params["after"] = after
 
@@ -51,7 +51,7 @@ def recurse(subreddit, hot_list=[], after=None):
 
         # Extract the list of posts from the 'data.children'
         posts = data.get("data", {}).get("children", [])
-	
+
         # Get the title of each post and add it to the hot_list
         for post in posts:
             title = post.get("data", {}).get("title")
