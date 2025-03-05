@@ -55,3 +55,24 @@ if __name__ == "__main__":
 
   - bind gunicorn to the flask route
   gunicorn --bind 0.0.0.0:5000 web_flask.0-hello_route:app
+
+
+## TO SERVE A PAGE USING NGINX
+  - log in to the web server
+  - configure the nginx configuration file
+  sudo vi /etc/nginx/sites-available/config-file-name
+  There in insert under server {
+	  location /airbnb-onepage/ {
+		  proxy_pass http:127.0.0.1:5000/;  # This ensures it is directed to Gunicorn
+		  proxy_set_header Host $host;
+        	  proxy_set_header X-Real-IP $remote_addr;
+        	  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    	  }
+
+  - Test nginx configuration: sudo nginx -t
+  - Restart nginx: sudo nginx systemctl restart nginx
+  - Then test on the terminal: curl -sI 127.0.0.1/airbnb-onepage/
+  - Expected output: HTTP/1.1 200 OK ...
+
+
+## CHALLENGE AND RESOLUTION
