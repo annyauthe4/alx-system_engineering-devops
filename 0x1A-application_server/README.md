@@ -42,3 +42,16 @@ if __name__ == "__main__":
 
 	  - Test the Flask app
 	  (myprojectenv) $ python myproject.py
+
+## TO SET UP PRODUCTION WITH GUNICORN
+  - Log in to the web server - ssh web-username@web-IP-address
+  eg ssh ubuntu@35.153.67.170
+  - install gunicorn and flask on the web server
+  sudo apt update
+  sudo apt install -y python3-pip
+  sudo apt install gunicorn flask
+  - clone the AirBnB_v2 on the web server
+  git clone https:/www.github.com/annyauthe4/AirBnB_clone_v2
+
+  - bind gunicorn to the flask route
+  gunicorn --bind 0.0.0.0:5000 web_flask.0-hello_route:app
