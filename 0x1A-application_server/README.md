@@ -76,3 +76,16 @@ if __name__ == "__main__":
 
 
 ## CHALLENGE AND RESOLUTION
+  During the cause of the configuration, the test was bringing page not found error, 404 error.
+  I checked if Gunicorn was listening on port 5000: sudo lsof -i :5000
+  It was listening on Port 5000. Had it not, I would start it manually:
+  gunicorn --bind 0.0.0.0:5000 web_flask.0-hello_route:app
+  That was a file named 0-hello_route.py inside a web_flask directory. The app is the Flask Object.
+  As gunicorn was listening on port 5000, I tested if it was serving the expected route:
+  curl 127.0.0.1:5000/airbnb-onepage/
+  As that was working, I tried fixing Nginx configuration file:
+  sudo vi /etc/nginx/sites-available/default
+  I added the lines of instruction under how to serve a page usig Nginx above.
+  I tested if the configuration was successful and then restarted Nginx, then tested it on the terminal as above.
+  Then check the content: curl 127.0.0.1/airbnb-onepage/
+  It brought the expected output.
